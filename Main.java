@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Main {
 
 	public static void main(String[] args) {
@@ -7,56 +5,59 @@ public class Main {
 		// Do we need to properly comment??
 	}
 
-	public static void setup(Data swimSim) {// has hardcoded number of objects but its ok for now
-		swimSim.fishPositions = Main.generateRandomPositions(4, swimSim.processing.width, swimSim.processing.height);
-		swimSim.foodPositions = Main.generateRandomPositions(6, swimSim.processing.width, swimSim.processing.height);
-		swimSim.hookPositions = Main.generateRandomPositions(1, swimSim.processing.width, swimSim.processing.height);
+	private static SwimSimulation tank;
+
+	public static void setup(Data swimSim) {
+		
+		SwimSimulation swim = new SwimSimulation(swimSim.processing);
+		tank = swim;
+
+		// swimSim.fishPositions = Main.generateRandomPositions(4,
+		// swimSim.processing.width, swimSim.processing.height);
+		// swimSim.foodPositions = Main.generateRandomPositions(6,
+		// swimSim.processing.width, swimSim.processing.height);
+		// swimSim.hookPositions = Main.generateRandomPositions(1,
+		// swimSim.processing.width, swimSim.processing.height);
+
 	}
 
 	public static void update(Data swimSim) {
-		String fish = "><(('>";
-		String food = "*";
-		String hook = "J";
-		// char water = '~';
-		int ypos;
-		int xpos;
-		PApplet processing = swimSim.processing;
-
-		swimSim.processing.background(0, 255, 255);// makes background cyan
-		for (int row = 0; row < swimSim.fishPositions.length; row++) {
-			xpos = swimSim.fishPositions[row][0];
-			ypos = swimSim.fishPositions[row][1];
-			Main.placeObjectInTank(fish, processing, xpos, ypos);
-		}
-
-		for (int row = 0; row < swimSim.foodPositions.length; row++) {
-			xpos = swimSim.foodPositions[row][0];
-			ypos = swimSim.foodPositions[row][1];
-			// System.out.println(ypos+","+xpos);
-			Main.placeObjectInTank(food, processing, xpos, ypos);
-		}
-		for (int row = 0; row < swimSim.hookPositions.length; row++) {
-			xpos = swimSim.hookPositions[0][0];
-			ypos = swimSim.hookPositions[0][1];
-			Main.placeObjectInTank(hook, processing, xpos, ypos);
-		}
-
-		Main.moveAllObjects(swimSim.foodPositions, -1, 1, swimSim.processing.width, swimSim.processing.height);
-
-		Main.moveAllObjects(swimSim.fishPositions, 1, 0, swimSim.processing.width, swimSim.processing.height);
-
-		int dyHook = -(processing.height + 50 - swimSim.hookPositions[0][1]) / 50;
-		Main.moveAllObjects(swimSim.hookPositions, 0, dyHook, swimSim.processing.width, swimSim.processing.height);
-		// debugging statements
-	//	System.out.println(Arrays.deepToString(swimSim.fishPositions));// seems good
-	//	// System.out.println(Arrays.deepToString(swimSim.foodPositions));//seems good
-	//	System.out.println("Hook Position: " + Arrays.deepToString(swimSim.hookPositions));// failed test 3 because of
-																							// this
-		// possible error: hook never reaches top (0 coordinate) because it moves too
-		// fast
-		// Should final pixels be 599 and 799??
+		tank.update();
 	}
 
+	/*
+	 * String fish = "><(('>"; String food = "*"; String hook = "J"; // char water =
+	 * '~'; int ypos; int xpos; PApplet processing = swimSim.processing;
+	 * 
+	 * swimSim.processing.background(0, 255, 255);// makes background cyan for (int
+	 * row = 0; row < swimSim.fishPositions.length; row++) { xpos =
+	 * swimSim.fishPositions[row][0]; ypos = swimSim.fishPositions[row][1];
+	 * Main.placeObjectInTank(fish, processing, xpos, ypos); }
+	 * 
+	 * for (int row = 0; row < swimSim.foodPositions.length; row++) { xpos =
+	 * swimSim.foodPositions[row][0]; ypos = swimSim.foodPositions[row][1]; //
+	 * System.out.println(ypos+","+xpos); Main.placeObjectInTank(food, processing,
+	 * xpos, ypos); } for (int row = 0; row < swimSim.hookPositions.length; row++) {
+	 * xpos = swimSim.hookPositions[0][0]; ypos = swimSim.hookPositions[0][1];
+	 * Main.placeObjectInTank(hook, processing, xpos, ypos); }
+	 * 
+	 * Main.moveAllObjects(swimSim.foodPositions, -1, 1, swimSim.processing.width,
+	 * swimSim.processing.height);
+	 * 
+	 * Main.moveAllObjects(swimSim.fishPositions, 1, 0, swimSim.processing.width,
+	 * swimSim.processing.height);
+	 * 
+	 * int dyHook = -(processing.height + 50 - swimSim.hookPositions[0][1]) / 50;
+	 * Main.moveAllObjects(swimSim.hookPositions, 0, dyHook,
+	 * swimSim.processing.width, swimSim.processing.height); // debugging statements
+	 * // System.out.println(Arrays.deepToString(swimSim.fishPositions));// seems
+	 * good // //
+	 * System.out.println(Arrays.deepToString(swimSim.foodPositions));//seems //
+	 * good // System.out.println("Hook Position: " + //
+	 * Arrays.deepToString(swimSim.hookPositions));// failed test 3 because of //
+	 * this // possible error: hook never reaches top (0 coordinate) because it
+	 * moves too // fast // Should final pixels be 599 and 799?? }
+	 */
 	public static void fillTank(char[][] tank, char water) {
 		for (int row = 0; row < tank.length; row++) {
 			for (int column = 0; column < tank[row].length; column++) {
@@ -158,9 +159,11 @@ public class Main {
 	}
 
 	public static void onClick(Data data, int mouseX, int mouseY) {// This method is continuously called in the main
-		data.hookPositions[0][0] = mouseX;
-		data.hookPositions[0][1] = data.processing.height;
-
+		tank.handleClick(mouseX, mouseX);
+		/*
+		 * data.hookPositions[0][0] = mouseX; data.hookPositions[0][1] =
+		 * data.processing.height;
+		 */
 	}
 
 }
