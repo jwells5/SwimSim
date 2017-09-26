@@ -11,8 +11,7 @@ public class Food {
 		width = Utility.randomInt(processing.width);
 		height = Utility.randomInt(processing.height);
 		foodImage = processing.loadImage("images" + java.io.File.separator + "FOOD.png");
-
-		}
+	}
 
 	public void update() {
 		width--;
@@ -23,13 +22,13 @@ public class Food {
 			height = 0;
 		}
 		processing.image(foodImage, width, height);
-		
 	}
+
 	public float distanceTo(int x, int y) {
 		float distance = (float) Math.sqrt(Math.pow(width - x, 2) + Math.pow(height - y, 2));
 		return distance;
 	}
-	
+
 	public void getEaten() {
 		width = Utility.randomInt(processing.width);
 		height = 0;
