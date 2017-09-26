@@ -8,9 +8,8 @@ public class Main {
 	private static SwimSimulation tank;
 
 	public static void setup(Data swimSim) {
+		tank = new SwimSimulation(swimSim.processing);
 		
-		SwimSimulation swim = new SwimSimulation(swimSim.processing);
-		tank = swim;
 
 		// swimSim.fishPositions = Main.generateRandomPositions(4,
 		// swimSim.processing.width, swimSim.processing.height);
@@ -23,6 +22,8 @@ public class Main {
 
 	public static void update(Data swimSim) {
 		tank.update();
+		
+		//SwimSimulation.update();
 	}
 
 	/*
