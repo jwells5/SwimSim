@@ -20,7 +20,7 @@ public class Hook {
 			height = processing.height;
 		float topY = 0;
 		processing.line(width, height, width, topY);
-		processing.image(hookImage, width, height);
+		processing.image(hookImage, width - 4, height);
 	}
 
 	public void handleClick(int mouseX, int mouseY) {

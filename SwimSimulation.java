@@ -10,13 +10,13 @@ public class SwimSimulation {
 		this.processing = processing;
 		fish = new Fish[4];
 		for (int i = 0; i < 4; i++) {
-			fish[i] = new Fish(this.processing);
+			fish[i] = new Fish(processing);
 		}
 		food = new Food[6];
 		for (int i = 0; i < 6; i++) {
-			food[i] = new Food(this.processing);
+			food[i] = new Food(processing);
 		}
-		hook = new Hook(this.processing);
+		hook = new Hook(processing);
 	}
 
 	public void handleClick(int mouseX, int mouseY) {
@@ -24,7 +24,7 @@ public class SwimSimulation {
 	}
 
 	public void update() {
-		this.processing.background(0, 255, 255); 
+		processing.background(0, 255, 255); 
 		for (int i = 0; i < fish.length; i++) {
 			for (int j = 0; j < food.length; j++) {
 				fish[i].tryToEat(food[j]);
